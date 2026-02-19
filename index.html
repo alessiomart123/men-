@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizzeria La Repubblica - Menu Digitale</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <h1>🍕 Pizzeria La Repubblica</h1>
+                <p class="tagline">Autentica pizza al forno a legna</p>
+            </div>
+            <nav class="nav-links">
+                <a href="#pizze" class="nav-link active" data-section="pizze">Pizze</a>
+                <a href="#bevande" class="nav-link" data-section="bevande">Bevande</a>
+                <a href="#contatti" class="nav-link" data-section="contatti">Contatti</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Benvenuto nel nostro menu</h2>
+            <p>Scopri le nostre specialità preparate con ingredienti freschi e autentici</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Sezione Pizze -->
+        <section id="pizze" class="menu-section">
+            <div class="section-header">
+                <h2>Pizze Speciali</h2>
+                <div class="divider"></div>
+            </div>
+            
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">Tutte</button>
+                <button class="filter-btn" data-filter="classiche">Classiche</button>
+                <button class="filter-btn" data-filter="speciali">Speciali</button>
+            </div>
+
+            <div class="menu-grid" id="pizze-grid">
+                <!-- Pizze verranno inserite da JavaScript -->
+            </div>
+        </section>
+
+        <!-- Sezione Bevande -->
+        <section id="bevande" class="menu-section">
+            <div class="section-header">
+                <h2>Bevande & Vini</h2>
+                <div class="divider"></div>
+            </div>
+
+            <div class="bevande-container">
+                <!-- Soft drinks -->
+                <div class="bevande-column">
+                    <h3>Bibite</h3>
+                    <div class="bevande-list" id="bibite-list">
+                        <!-- Bibite verranno inserite da JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Birre -->
+                <div class="bevande-column">
+                    <h3>Birre</h3>
+                    <div class="bevande-list" id="birre-list">
+                        <!-- Birre verranno inserite da JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Vini -->
+                <div class="bevande-column">
+                    <h3>Vini</h3>
+                    <div class="bevande-list" id="vini-list">
+                        <!-- Vini verranno inserite da JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sezione Contatti -->
+        <section id="contatti" class="menu-section contact-section">
+            <div class="section-header">
+                <h2>Contattaci</h2>
+                <div class="divider"></div>
+            </div>
+
+            <div class="contact-info">
+                <div class="contact-card">
+                    <h3>📍 Indirizzo</h3>
+                    <p>Via della Repubblica 15<br>Roma, Italia</p>
+                </div>
+                <div class="contact-card">
+                    <h3>📞 Telefono</h3>
+                    <p><a href="tel:+39012345678">+39 012 345 6789</a></p>
+                </div>
+                <div class="contact-card">
+                    <h3>📧 Email</h3>
+                    <p><a href="mailto:iltuo.ristorante@gmail.com">iltuo.ristorante@gmail.com</a></p>
+                </div>
+                <div class="contact-card">
+                    <h3>🕐 Orari</h3>
+                    <p>Lun-Gio: 11:00-23:00<br>Ven-Dom: 11:00-00:00</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal per dettagli pizza -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-title"></h2>
+            <div class="modal-body">
+                <div id="modal-image" class="modal-image"></div>
+                <div id="modal-details" class="modal-details"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Pizzeria La Repubblica. Tutti i diritti riservati.</p>
+            <p>Realizzato con ❤️ per gli amanti della pizza autentica</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
