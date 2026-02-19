@@ -4,7 +4,673 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pizzeria La Repubblica - Menu Digitale</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ===== RESET E VARIABILI ===== */
+        :root {
+            --primary-dark: #1a1a1a;
+            --primary-red: #c62828;
+            --primary-orange: #ff9800;
+            --secondary-dark: #2d2d2d;
+            --text-light: #f5f5f5;
+            --text-muted: #b0b0b0;
+            --border-color: #404040;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --shadow-light: 0 4px 16px rgba(0, 0, 0, 0.2);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
+            border-bottom: 3px solid var(--primary-red);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            color: var(--primary-orange);
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .tagline {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            transition: var(--transition);
+            padding: 8px 12px;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary-orange);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-orange);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            background: linear-gradient(135deg, rgba(198, 40, 40, 0.2) 0%, rgba(255, 152, 0, 0.1) 100%),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="%23404040" stroke-width="1" opacity="0.1"/></pattern></defs><rect width="1200" height="400" fill="%231a1a1a"/><rect width="1200" height="400" fill="url(%23grid)"/></svg>');
+            background-attachment: fixed;
+            padding: 80px 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-orange);
+        }
+
+        .hero-content h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--primary-orange);
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        main {
+            padding: 60px 0;
+        }
+
+        /* ===== SECTION HEADERS ===== */
+        .menu-section {
+            margin-bottom: 80px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header h2 {
+            font-size: 42px;
+            color: var(--primary-orange);
+            margin-bottom: 15px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .divider {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-red) 0%, var(--primary-orange) 100%);
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        /* ===== FILTERS ===== */
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            border: 2px solid var(--primary-orange);
+            background: transparent;
+            color: var(--primary-orange);
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-orange);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* ===== MENU GRID ===== */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .menu-item {
+            background: linear-gradient(135deg, var(--secondary-dark) 0%, #353535 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-light);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary-orange);
+        }
+
+        .menu-item-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, rgba(198, 40, 40, 0.3) 0%, rgba(255, 152, 0, 0.2) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .menu-item-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-item-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--primary-orange);
+            margin-bottom: 10px;
+        }
+
+        .menu-item-category {
+            display: inline-block;
+            padding: 5px 12px;
+            background: rgba(198, 40, 40, 0.2);
+            color: var(--primary-red);
+            font-size: 12px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            width: fit-content;
+        }
+
+        .menu-item-ingredients {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            flex-grow: 1;
+            line-height: 1.5;
+        }
+
+        .menu-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .menu-item-price {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary-orange);
+        }
+
+        .menu-item-btn {
+            background: var(--primary-orange);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        .menu-item-btn:hover {
+            background: var(--primary-red);
+            transform: scale(1.05);
+        }
+
+        /* ===== BEVANDE SECTION ===== */
+        .bevande-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .bevande-column h3 {
+            font-size: 24px;
+            color: var(--primary-red);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bevande-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .bevanda-item {
+            padding: 18px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .bevanda-item:hover {
+            background: rgba(255, 152, 0, 0.1);
+            padding-left: 25px;
+            border-left: 4px solid var(--primary-orange);
+        }
+
+        .bevanda-name {
+            font-size: 16px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .bevanda-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-orange);
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        .contact-section {
+            background: linear-gradient(135deg, rgba(198, 40, 40, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .contact-card {
+            background: var(--secondary-dark);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .contact-card:hover {
+            border-color: var(--primary-orange);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .contact-card h3 {
+            font-size: 20px;
+            color: var(--primary-orange);
+            margin-bottom: 12px;
+        }
+
+        .contact-card p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .contact-card a {
+            color: var(--primary-orange);
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .contact-card a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: var(--secondary-dark);
+            margin: 10% auto;
+            padding: 0;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            animation: slideDown 0.3s ease;
+        }
+
+        .modal-body {
+            padding: 40px;
+            display: flex;
+            gap: 30px;
+            flex-direction: column;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(198, 40, 40, 0.3) 0%, rgba(255, 152, 0, 0.2) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            border-radius: 8px;
+        }
+
+        .modal-details h2 {
+            color: var(--primary-orange);
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .modal-details p {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary-orange);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close:hover {
+            color: white;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--secondary-dark);
+            border-top: 2px solid var(--primary-red);
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin: 8px 0;
+        }
+
+        footer p:first-child {
+            color: var(--primary-orange);
+            font-weight: 600;
+        }
+
+        /* ===== ANIMAZIONI ===== */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .logo h1 {
+                font-size: 22px;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .nav-link {
+                font-size: 14px;
+            }
+
+            .hero-content h2 {
+                font-size: 32px;
+            }
+
+            .hero-content p {
+                font-size: 16px;
+            }
+
+            .section-header h2 {
+                font-size: 32px;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-item-image {
+                height: 180px;
+                font-size: 60px;
+            }
+
+            .bevande-container {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 20% auto;
+            }
+
+            .modal-body {
+                padding: 25px;
+                gap: 20px;
+            }
+
+            .modal-image {
+                height: 150px;
+                font-size: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .logo h1 {
+                font-size: 18px;
+            }
+
+            .tagline {
+                font-size: 11px;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .hero {
+                padding: 50px 15px;
+            }
+
+            .hero-content h2 {
+                font-size: 24px;
+            }
+
+            .hero-content p {
+                font-size: 14px;
+            }
+
+            .menu-item {
+                border-radius: 8px;
+            }
+
+            .menu-item-content {
+                padding: 18px;
+            }
+
+            .menu-item-name {
+                font-size: 18px;
+            }
+
+            .menu-item-price {
+                font-size: 24px;
+            }
+
+            .section-header h2 {
+                font-size: 24px;
+            }
+
+            .filters {
+                gap: 10px;
+            }
+
+            .filter-btn {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+
+            .bevanda-item {
+                padding: 14px;
+            }
+
+            .bevanda-name {
+                font-size: 14px;
+            }
+
+            .bevanda-price {
+                font-size: 16px;
+            }
+
+            .contact-card {
+                padding: 20px;
+            }
+
+            .contact-card h3 {
+                font-size: 18px;
+            }
+
+            footer p {
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header/Navigation -->
@@ -132,6 +798,275 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // Dati delle pizze
+        const pizzas = [
+            {
+                name: "Margherita",
+                category: "classiche",
+                ingredients: "Pomodoro DOP, Mozzarella fior di latte, Basilico fresco",
+                price: 6.50,
+                emoji: "🍅"
+            },
+            {
+                name: "Marinara",
+                category: "classiche",
+                ingredients: "Pomodoro, Aglio, Origano, Olio EVO",
+                price: 5.00,
+                emoji: "🌬️"
+            },
+            {
+                name: "Diavola",
+                category: "speciali",
+                ingredients: "Pomodoro, Mozzarella, Salame piccante, Pepe",
+                price: 8.50,
+                emoji: "🌶️"
+            },
+            {
+                name: "Quattro Formaggi",
+                category: "speciali",
+                ingredients: "Mozzarella, Gorgonzola, Parmigiano, Provola",
+                price: 9.50,
+                emoji: "🧀"
+            },
+            {
+                name: "Capricciosa",
+                category: "speciali",
+                ingredients: "Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi, Olive",
+                price: 9.00,
+                emoji: "🎨"
+            },
+            {
+                name: "Prosciutto e Funghi",
+                category: "classiche",
+                ingredients: "Pomodoro, Mozzarella, Prosciutto crudo, Funghi porcini",
+                price: 9.50,
+                emoji: "🍄"
+            },
+            {
+                name: "Bufalina",
+                category: "speciali",
+                ingredients: "Mozzarella di bufala, Pomodoro fresco, Basilico",
+                price: 10.00,
+                emoji: "🐃"
+            },
+            {
+                name: "Ortolana",
+                category: "speciali",
+                ingredients: "Verdure grigliate, Mozzarella, Basilico, Pomodoro",
+                price: 8.50,
+                emoji: "🥦"
+            },
+            {
+                name: "Tonno e Cipolla",
+                category: "speciali",
+                ingredients: "Pomodoro, Mozzarella, Tonno, Cipolla rossa",
+                price: 8.00,
+                emoji: "🐟"
+            },
+            {
+                name: "Frutti di Mare",
+                category: "speciali",
+                ingredients: "Pomodoro, Mozzarella, Gamberi, Calamari, Cozze",
+                price: 11.00,
+                emoji: "🦐"
+            },
+            {
+                name: "Napoli",
+                category: "classiche",
+                ingredients: "Pomodoro, Mozzarella, Acciughe, Capperi",
+                price: 7.50,
+                emoji: "🌊"
+            },
+            {
+                name: "Siciliana",
+                category: "speciali",
+                ingredients: "Pomodoro, Ricotta salata, Melanzane, Basilico",
+                price: 9.00,
+                emoji: "🍆"
+            }
+        ];
+
+        // Dati delle bevande
+        const beverages = {
+            bibite: [
+                { name: "Acqua naturale 0.5L", price: 2.00 },
+                { name: "Acqua frizzante 0.5L", price: 2.00 },
+                { name: "Coca-Cola 33cl", price: 3.00 },
+                { name: "Aranciata 33cl", price: 3.00 }
+            ],
+            birre: [
+                { name: "Birra bionda 33cl", price: 4.00 },
+                { name: "Birra artigianale 50cl", price: 5.50 },
+                { name: "Birra alla spina 40cl", price: 4.50 }
+            ],
+            vini: [
+                { name: "Vino rosso della casa (bicchiere)", price: 4.00 },
+                { name: "Vino bianco della casa (bicchiere)", price: 4.00 },
+                { name: "Chianti Classico DOC (bottiglia)", price: 18.00 },
+                { name: "Prosecco DOC (bottiglia)", price: 20.00 }
+            ]
+        };
+
+        // Elementi DOM
+        const pizzeGrid = document.getElementById('pizze-grid');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const modal = document.getElementById('modal');
+        const closeBtn = document.querySelector('.close');
+
+        let currentFilter = 'all';
+
+        // ===== INIZIALIZZAZIONE =====
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPizzas('all');
+            renderBeverages();
+            setupEventListeners();
+        });
+
+        // ===== RENDER PIZZAS =====
+        function renderPizzas(filter) {
+            currentFilter = filter;
+            
+            const filteredPizzas = filter === 'all' 
+                ? pizzas 
+                : pizzas.filter(p => p.category === filter);
+            
+            pizzeGrid.innerHTML = filteredPizzas.map((pizza, index) => `
+                <div class="menu-item" onclick="openModal('${pizza.name}', '${pizza.emoji}', '${pizza.ingredients}', ${pizza.price})">
+                    <div class="menu-item-image">${pizza.emoji}</div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-category">${pizza.category === 'classiche' ? 'Classica' : 'Speciale'}</div>
+                        <h3 class="menu-item-name">${pizza.name}</h3>
+                        <p class="menu-item-ingredients">${pizza.ingredients}</p>
+                        <div class="menu-item-footer">
+                            <span class="menu-item-price">€ ${pizza.price.toFixed(2)}</span>
+                            <button class="menu-item-btn" onclick="event.stopPropagation()">Dettagli</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== RENDER BEVERAGES =====
+        function renderBeverages() {
+            renderBeverageColumn('bibite', beverages.bibite);
+            renderBeverageColumn('birre', beverages.birre);
+            renderBeverageColumn('vini', beverages.vini);
+        }
+
+        function renderBeverageColumn(id, items) {
+            const container = document.getElementById(`${id}-list`);
+            container.innerHTML = items.map(item => `
+                <div class="bevanda-item">
+                    <span class="bevanda-name">${item.name}</span>
+                    <span class="bevanda-price">€ ${item.price.toFixed(2)}</span>
+                </div>
+            `).join('');
+        }
+
+        // ===== SETUP EVENT LISTENERS =====
+        function setupEventListeners() {
+            // Filter buttons
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderPizzas(btn.dataset.filter);
+                });
+            });
+
+            // Navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                });
+            });
+
+            // Modal close
+            closeBtn.onclick = closeModal;
+            window.onclick = (event) => {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            };
+        }
+
+        // ===== MODAL FUNCTIONS =====
+        function openModal(name, emoji, ingredients, price) {
+            const modalTitle = document.getElementById('modal-title');
+            const modalImage = document.getElementById('modal-image');
+            const modalDetails = document.getElementById('modal-details');
+
+            modalTitle.textContent = name;
+            modalImage.innerHTML = emoji;
+            modalImage.style.fontSize = '120px';
+            
+            modalDetails.innerHTML = `
+                <div>
+                    <p><strong>Ingredienti:</strong></p>
+                    <p>${ingredients}</p>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 20px; border-top: 2px solid #404040;">
+                    <span style="font-size: 28px; color: #ff9800; font-weight: bold;">€ ${price.toFixed(2)}</span>
+                    <button onclick="addToCart('${name}', ${price})" style="background: #ff9800; color: white; border: none; padding: 12px 30px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px; transition: all 0.3s ease;" onmouseover="this.style.background='#c62828'" onmouseout="this.style.background='#ff9800'">Aggiungi al carrello</button>
+                </div>
+            `;
+
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        function addToCart(name, price) {
+            // Animazione di feedback
+            const notification = document.createElement('div');
+            notification.textContent = `✓ ${name} aggiunto al carrello!`;
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: #4caf50;
+                color: white;
+                padding: 15px 25px;
+                border-radius: 6px;
+                font-weight: bold;
+                z-index: 2000;
+                animation: slideIn 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            `;
+            document.body.appendChild(notification);
+            
+            closeModal();
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // ===== SMOOTH SCROLL =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // ===== ANIMAZIONE AL CARICAMENTO =====
+        window.addEventListener('load', () => {
+            const items = document.querySelectorAll('.menu-item');
+            items.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.animation = `slideDown 0.5s ease ${index * 0.05}s forwards`;
+            });
+        });
+    </script>
 </body>
 </html>
