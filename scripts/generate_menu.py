@@ -104,9 +104,9 @@ def draw_menu(output_path="menu_pizzeria.pdf"):
 
     # Layout pizzas with images in two columns, images smaller and ingredients highlighted
     col_x = [margin, width / 2 + 6 * mm]
-    y_start = height - 140
-    box_h = IMG_H + 22 * mm
-    per_col = 6
+    y_start = height - 160
+    box_h = IMG_H + 16 * mm
+    per_col = 8
 
     for col in range(2):
         x = col_x[col]
@@ -138,23 +138,28 @@ def draw_menu(output_path="menu_pizzeria.pdf"):
             c.rect(img_x - 2, img_y - 2, IMG_W + 4, IMG_H + 4, stroke=1, fill=0)
             c.drawImage(img_path, img_x, img_y, width=IMG_W, height=IMG_H, preserveAspectRatio=True, mask='auto')
 
-            # Text with ingredients label
+            # Text with ingredients label and clearer price alignment
             text_x = img_x + IMG_W + 8 * mm
             text_y = box_y + IMG_H + 8 * mm
             c.setFont("Helvetica-Bold", 12)
             c.setFillColor(colors.HexColor("#212121"))
-            c.drawString(text_x, text_y, f"{p['name']}  —  €{p['price']:.2f}")
+            # Draw name on the left, price right-aligned inside the box
+            c.drawString(text_x, text_y, p['name'])
+            c.setFont("Helvetica-Bold", 11)
+            right_price_x = (x - 2 * mm) + box_w - 6 * mm
+            c.drawRightString(right_price_x, text_y, f"€{p['price']:.2f}")
             text_y -= 14
             c.setFont("Helvetica-Bold", 9)
-            c.setFillColor(colors.HexColor("#616161"))
+            c.setFillColor(colors.HexColor("#424242"))
             c.drawString(text_x, text_y, "Ingredienti:")
-            text_y -= 12
-            c.setFont("Helvetica", 9)
-            for line in wrap(p['desc'], 40):
+            text_y -= 11
+            c.setFont("Helvetica", 10)
+            c.setFillColor(colors.HexColor("#333333"))
+            for line in wrap(p['desc'], 48):
                 c.drawString(text_x, text_y, line)
                 text_y -= 11
 
-            y = box_y - 14 * mm
+            y = box_y - 8 * mm
 
 
     # Beverages section on a new page with improved style and background
