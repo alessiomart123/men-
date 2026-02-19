@@ -8,8 +8,8 @@ from textwrap import wrap
 from PIL import Image, ImageDraw, ImageFont
 
 
-IMG_W = 60 * mm
-IMG_H = 45 * mm
+IMG_W = 40 * mm
+IMG_H = 30 * mm
 
 
 def ensure_images(image_dir, pizzas):
@@ -45,6 +45,10 @@ def draw_menu(output_path="menu_pizzeria.pdf"):
     width, height = A4
     c = canvas.Canvas(output_path, pagesize=A4)
     margin = 16 * mm
+
+    # Page background
+    c.setFillColor(colors.HexColor("#fff8e1"))
+    c.rect(0, 0, width, height, fill=1, stroke=0)
 
     # Header background
     c.setFillColor(colors.HexColor("#b71c1c"))
@@ -98,10 +102,10 @@ def draw_menu(output_path="menu_pizzeria.pdf"):
     image_dir = os.path.join(os.path.dirname(__file__), 'images')
     ensure_images(image_dir, pizzas)
 
-    # Layout pizzas with images in two columns
+    # Layout pizzas with images in two columns, images smaller and ingredients highlighted
     col_x = [margin, width / 2 + 6 * mm]
-    y_start = height - 130
-    box_h = IMG_H + 18 * mm
+    y_start = height - 140
+    box_h = IMG_H + 22 * mm
     per_col = 6
 
     for col in range(2):
@@ -111,63 +115,105 @@ def draw_menu(output_path="menu_pizzeria.pdf"):
         if col == 0:
             c.setFillColor(colors.HexColor("#212121"))
             c.drawString(x, y, "Pizze")
-        y -= 14
+        y -= 16
         c.setFont("Helvetica", 10)
         for i in range(per_col):
             idx = col * per_col + i
             if idx >= len(pizzas):
                 break
             p = pizzas[idx]
-            # Box
+            # Box with background
             box_y = y - IMG_H
-            box_w = (width / 2) - margin - 8 * mm
-            c.setStrokeColor(colors.HexColor("#bdbdbd"))
-            c.rect(x - 2 * mm, box_y - 6 * mm, box_w, box_h - 6 * mm, stroke=1, fill=0)
+            box_w = (width / 2) - margin - 10 * mm
+            c.setFillColor(colors.HexColor("#ffffff"))
+            c.setStrokeColor(colors.HexColor("#e0e0e0"))
+            c.roundRect(x - 2 * mm, box_y - 6 * mm, box_w, box_h - 6 * mm, 4 * mm, stroke=1, fill=1)
 
-            # Image
+            # Small image inside a framed square
             img_path = os.path.join(image_dir, p['image'])
-            img_x = x + 6 * mm
-            img_y = box_y + 6 * mm
+            img_x = x + 8 * mm
+            img_y = box_y + 8 * mm
+            # image frame
+            c.setStrokeColor(colors.HexColor("#bdbdbd"))
+            c.rect(img_x - 2, img_y - 2, IMG_W + 4, IMG_H + 4, stroke=1, fill=0)
             c.drawImage(img_path, img_x, img_y, width=IMG_W, height=IMG_H, preserveAspectRatio=True, mask='auto')
 
-            # Text
-            text_x = img_x + IMG_W + 6 * mm
-            text_y = box_y + IMG_H
+            # Text with ingredients label
+            text_x = img_x + IMG_W + 8 * mm
+            text_y = box_y + IMG_H + 8 * mm
             c.setFont("Helvetica-Bold", 12)
             c.setFillColor(colors.HexColor("#212121"))
             c.drawString(text_x, text_y, f"{p['name']}  —  €{p['price']:.2f}")
+            text_y -= 14
+            c.setFont("Helvetica-Bold", 9)
+            c.setFillColor(colors.HexColor("#616161"))
+            c.drawString(text_x, text_y, "Ingredienti:")
             text_y -= 12
             c.setFont("Helvetica", 9)
             for line in wrap(p['desc'], 40):
                 c.drawString(text_x, text_y, line)
-                text_y -= 10
+                text_y -= 11
 
-            y = box_y - 12 * mm
+            y = box_y - 14 * mm
 
-    # Beverages section on a new page for clarity
+
+    # Beverages section on a new page with improved style and background
     c.showPage()
-    c.setFont("Helvetica-Bold", 20)
+    # page background
+    c.setFillColor(colors.HexColor("#fff8e1"))
+    c.rect(0, 0, width, height, fill=1, stroke=0)
+    c.setFont("Helvetica-Bold", 22)
     c.setFillColor(colors.HexColor("#b71c1c"))
-    c.drawCentredString(width / 2, height - 60, "Bevande e Vini")
-    c.setFont("Helvetica", 11)
-    x_left = margin
+    c.drawCentredString(width / 2, height - 60, "Bevande & Vini")
+
+    # decorative divider
+    c.setStrokeColor(colors.HexColor("#e0e0e0"))
+    c.line(margin, height - 68, width - margin, height - 68)
+
+    # two-column layout: left soft drinks and birre, right vini
+    left_x = margin
+    right_x = width / 2 + 6 * mm
     y = height - 100
-    for b in beverages:
-        if y < margin + 40:
-            c.showPage()
-            y = height - margin
-        c.setFillColor(colors.HexColor("#212121"))
-        c.drawString(x_left, y, f"{b['name']}  —  €{b['price']:.2f}")
+
+    # Left column categories
+    c.setFont("Helvetica-Bold", 14)
+    c.setFillColor(colors.HexColor("#212121"))
+    c.drawString(left_x, y, "Bevande")
+    y -= 18
+    c.setFont("Helvetica", 11)
+    for b in beverages[:6]:
+        c.drawString(left_x, y, f"{b['name']}")
+        c.drawRightString(left_x + (width/2 - 2*margin), y, f"€{b['price']:.2f}")
         y -= 14
+
+    # Right column - vini
+    y2 = height - 100
+    c.setFont("Helvetica-Bold", 14)
+    c.drawString(right_x, y2, "Vini")
+    y2 -= 18
+    c.setFont("Helvetica", 11)
+    for b in beverages[6:]:
+        c.drawString(right_x, y2, f"{b['name']}")
+        c.drawRightString(right_x + (width/2 - 2*margin), y2, f"€{b['price']:.2f}")
+        y2 -= 14
+
+    # Add a gentle watermark circle
+    c.setFillColor(colors.HexColor("#fff3e0"))
+    c.circle(width/2, height/2 + 20*mm, 60*mm, fill=1, stroke=0)
 
     # Footer with larger contact details
     footer_y = margin + 8 * mm
+    # Footer box with larger contact details
+    footer_w = width - 2 * margin
+    c.setFillColor(colors.HexColor("#ffffff"))
+    c.setStrokeColor(colors.HexColor("#e0e0e0"))
+    c.roundRect(margin, footer_y - 4 * mm, footer_w, 18 * mm, 3 * mm, stroke=1, fill=1)
     c.setFillColor(colors.HexColor("#424242"))
     c.setFont("Helvetica-Bold", 12)
     contact = "Via della Repubblica 15"
-    c.drawCentredString(width / 2, footer_y + 18, contact)
+    c.drawCentredString(width / 2, footer_y + 10, contact)
     c.setFont("Helvetica", 11)
-    c.drawCentredString(width / 2, footer_y + 4, "Tel. +39 012 345 6789 — iltuo.ristorante@gmail.com")
+    c.drawCentredString(width / 2, footer_y - 4, "Tel. +39 012 345 6789 — iltuo.ristorante@gmail.com")
 
     # Small decorative circle on footer
     c.setFillColor(colors.HexColor("#b71c1c"))
