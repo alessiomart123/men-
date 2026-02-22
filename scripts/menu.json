@@ -1,0 +1,35 @@
+{
+  "pizzas": [
+    {"name": "Margherita", "category": "classiche", "ingredients": "Pomodoro DOP, Mozzarella fior di latte, Basilico fresco", "price": 6.5, "emoji": "🍅"},
+    {"name": "Marinara", "category": "classiche", "ingredients": "Pomodoro, Aglio, Origano, Olio EVO", "price": 5.0, "emoji": "🌬️"},
+    {"name": "Diavola", "category": "speciali", "ingredients": "Pomodoro, Mozzarella, Salame piccante, Pepe", "price": 8.5, "emoji": "🌶️"},
+    {"name": "Quattro Formaggi", "category": "speciali", "ingredients": "Mozzarella, Gorgonzola, Parmigiano, Provola", "price": 9.5, "emoji": "🧀"},
+    {"name": "Capricciosa", "category": "speciali", "ingredients": "Pomodoro, Mozzarella, Prosciutto, Funghi, Carciofi, Olive", "price": 9.0, "emoji": "🎨"},
+    {"name": "Prosciutto e Funghi", "category": "classiche", "ingredients": "Pomodoro, Mozzarella, Prosciutto crudo, Funghi porcini", "price": 9.5, "emoji": "🍄"},
+    {"name": "Bufalina", "category": "speciali", "ingredients": "Mozzarella di bufala, Pomodoro fresco, Basilico", "price": 10.0, "emoji": "🐃"},
+    {"name": "Ortolana", "category": "speciali", "ingredients": "Verdure grigliate, Mozzarella, Basilico, Pomodoro", "price": 8.5, "emoji": "🥦"},
+    {"name": "Tonno e Cipolla", "category": "speciali", "ingredients": "Pomodoro, Mozzarella, Tonno, Cipolla rossa", "price": 8.0, "emoji": "🐟"},
+    {"name": "Frutti di Mare", "category": "speciali", "ingredients": "Pomodoro, Mozzarella, Gamberi, Calamari, Cozze", "price": 11.0, "emoji": "🦐"},
+    {"name": "Napoli", "category": "classiche", "ingredients": "Pomodoro, Mozzarella, Acciughe, Capperi", "price": 7.5, "emoji": "🌊"},
+    {"name": "Siciliana", "category": "speciali", "ingredients": "Pomodoro, Ricotta salata, Melanzane, Basilico", "price": 9.0, "emoji": "🍆"}
+  ],
+  "beverages": {
+    "bibite": [
+      {"name": "Acqua naturale 0.5L", "price": 2.0},
+      {"name": "Acqua frizzante 0.5L", "price": 2.0},
+      {"name": "Coca-Cola 33cl", "price": 3.0},
+      {"name": "Aranciata 33cl", "price": 3.0}
+    ],
+    "birre": [
+      {"name": "Birra bionda 33cl", "price": 4.0},
+      {"name": "Birra artigianale 50cl", "price": 5.5},
+      {"name": "Birra alla spina 40cl", "price": 4.5}
+    ],
+    "vini": [
+      {"name": "Vino rosso della casa (bicchiere)", "price": 4.0},
+      {"name": "Vino bianco della casa (bicchiere)", "price": 4.0},
+      {"name": "Chianti Classico DOC (bottiglia)", "price": 18.0},
+      {"name": "Prosecco DOC (bottiglia)", "price": 20.0}
+    ]
+  }
+}
